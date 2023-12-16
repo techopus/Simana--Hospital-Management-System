@@ -1,0 +1,330 @@
+kgautam@clabsql:~> mysql -u group27 -p
+Enter password: 
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 19236
+Server version: 10.6.9-MariaDB MariaDB package
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| group27            |
+| information_schema |
+| test               |
++--------------------+
+3 rows in set (0.001 sec)
+
+MariaDB [(none)]> use group27;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+MariaDB [group27]> show tables;
++-------------------+
+| Tables_in_group27 |
++-------------------+
+| Bill              |
+| Department        |
+| Doctor            |
+| Hospital          |
+| MedicalRecord     |
+| Medicine          |
+| Patient           |
+| treats            |
++-------------------+
+
+
+MariaDB [group27]> select * from Doctor;
++-----+---------+----------------+-----------+----------+---------+------+-------+
+| DId | DName   | Specialization | DPhone    | DAddress | DSalary | HId  | DepId |
++-----+---------+----------------+-----------+----------+---------+------+-------+
+|   1 | Krishna | Neurosurgeon   | 220002222 | Bremen   | 400k    | 7340 |  NULL |
++-----+---------+----------------+-----------+----------+---------+------+-------+
+1 row in set (0.000 sec)
+
+MariaDB [group27]> select * from Department;
+Empty set (0.000 sec)
+
+MariaDB [group27]> select * from Hospital;
++------+-----------------+------------+----------+
+| HId  | HName           | HType      | HAddress |
++------+-----------------+------------+----------+
+| 7340 | Simana Hospital | All in One | Chitwan  |
++------+-----------------+------------+----------+
+1 row in set (0.000 sec)
+
+
+Query OK, 1 row affected (0.002 sec)
+
+MariaDB [group27]> select * from Doctor;
++-----+----------+----------------+------------+----------+---------+------+-------+
+| DId | DName    | Specialization | DPhone     | DAddress | DSalary | HId  | DepId |
++-----+----------+----------------+------------+----------+---------+------+-------+
+|   1 | Krishna  | Neurosurgeon   | 220002222  | Bremen   | 400k    | 7340 |   100 |
+|   2 | Charchit | Gastrology     | 2200022453 | Turkey   | 300k    | 7340 |   100 |
+|   3 | Krishna  | Cardiologist   | 2342002222 | Berlin   | 400k    | 7340 |   100 |
+|   4 | Nischal  | Orthopedics    | 2203452222 | Hongkong | 100k    | 7340 |  NULL |
++-----+----------+----------------+------------+----------+---------+------+-------+
+4 rows in set (0.000 sec)
+
+MariaDB [group27]> select * from Department;
++-------+---------+------+
+| DepId | DepName | HId  |
++-------+---------+------+
+|   100 | OPD     | 7340 |
+|   101 | Nursing | 7340 |
++-------+---------+------+
+2 rows in set (0.001 sec)
+
+Query OK, 1 row affected (0.002 sec)
+
+MariaDB [group27]> select * from Doctor
+    -> where DName = 'Charchit';
++-----+----------+----------------+------------+----------+---------+------+-------+
+| DId | DName    | Specialization | DPhone     | DAddress | DSalary | HId  | DepId |
++-----+----------+----------------+------------+----------+---------+------+-------+
+|   2 | Charchit | Gastrology     | 2200022453 | Turkey   | 300k    | 7340 |   100 |
++-----+----------+----------------+------------+----------+---------+------+-------+
+1 row in set (0.001 sec)
+
+MariaDB [group27]> select * from Doctor
+    -> where DName = 'Krishna';
++-----+---------+----------------+------------+----------+---------+------+-------+
+| DId | DName   | Specialization | DPhone     | DAddress | DSalary | HId  | DepId |
++-----+---------+----------------+------------+----------+---------+------+-------+
+|   1 | Krishna | Neurosurgeon   | 220002222  | Bremen   | 400k    | 7340 |   100 |
+|   3 | Krishna | Cardiologist   | 2342002222 | Berlin   | 400k    | 7340 |   100 |
++-----+---------+----------------+------------+----------+---------+------+-------+
+2 rows in set (0.001 sec)
+
+
+MariaDB [group27]> select count(DId), DAddress
+    -> from Doctor
+    -> group by DAddress;
++------------+-----------+
+| count(DId) | DAddress  |
++------------+-----------+
+|          1 | Berlin    |
+|          1 | Bremen    |
+|          1 | Hongkong  |
+|          2 | New York  |
+|          2 | Singapore |
+|          1 | Thailand  |
+|          1 | Turkey    |
++------------+-----------+
+7 rows in set (0.001 sec)
+
+
+MariaDB [group27]> show tables;
++-------------------+
+| Tables_in_group27 |
++-------------------+
+| Bill              |
+| Department        |
+| Doctor            |
+| Hospital          |
+| MedicalRecord     |
+| Medicine          |
+| Patient           |
+| treats            |
++-------------------+
+8 rows in set (0.000 sec)
+
+MariaDB [group27]> select * from Bill;
++--------+------+--------------+------------+------------+------------+---------------+-------+
+| BId    | PId  | DoctorCharge | TestType   | TestCharge | RoomCharge | Miscellaneous | Total |
++--------+------+--------------+------------+------------+------------+---------------+-------+
+| 100001 | 1000 |          100 | Blood Test |         50 |        400 |            50 |   500 |
+| 100002 | 1001 |          200 | Sugar Test |        500 |        600 |            50 |  1150 |
+| 100003 | 1002 |          100 | Stool Test |        500 |        500 |            50 |  1150 |
++--------+------+--------------+------------+------------+------------+---------------+-------+
+3 rows in set (0.000 sec)
+
+MariaDB [group27]> Ctrl-C -- exit!
+Aborted
+kgautam@clabsql:~> mysql -u group27 -p
+Enter password: 
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 19240
+Server version: 10.6.9-MariaDB MariaDB package
+
+
+MariaDB [group27]>    SELECT COUNT(PId), PAge
+    -> FROM Patient
+    -> GROUP BY PAge
+    -> HAVING COUNT(PId) > 5
+    -> ORDER BY COUNT(PId) DESC;
+Empty set (0.001 sec)
+
+MariaDB [group27]>  SELECT COUNT(PId), PAge
+    -> FROM Patient
+    -> GROUP BY PAge
+    -> HAVING COUNT(PId) < 5
+    -> ORDER BY COUNT(PId) DESC;
++------------+------+
+| COUNT(PId) | PAge |
++------------+------+
+|          1 |   24 |
+|          1 |   22 |
+|          1 |   50 |
++------------+------+
+3 rows in set (0.000 sec)
+
+MariaDB [group27]> SELECT * FROM group27.Patient
+    -> WHERE PId =1;
+Empty set (0.000 sec)
+
+MariaDB [group27]> SELECT * FROM group27.Patient
+    -> WHERE PId =1000;
++------+---------+------+----------+-----------+------+------+
+| PId  | PName   | PAge | PAddress | PPhone    | RId  | HId  |
++------+---------+------+----------+-----------+------+------+
+| 1000 | Nischal |   24 | Ktm      | 848536925 |  200 | 7340 |
++------+---------+------+----------+-----------+------+------+
+1 row in set (0.000 sec)
+
+MariaDB [group27]> SELECT  DName, Specialization
+    -> FROM group27.Doctor
+    -> WHERE DName = 'Krishna' AND Specialization = 'Neurosurgeon';
++---------+----------------+
+| DName   | Specialization |
++---------+----------------+
+| Krishna | Neurosurgeon   |
++---------+----------------+
+1 row in set (0.000 sec)
+
+MariaDB [group27]> SELECT * FROM MedicalReport
+    -> ORDER BY RId;
+ERROR 1146 (42S02): Table 'group27.MedicalReport' doesn't exist
+MariaDB [group27]> SELECT * FROM MedicalRecord
+    -> ORDER BY RId;
++-----+------------+--------------+--------------------------+------+------+
+| RId | AdmitDate  | IReport      | FReport                  | PId  | DId  |
++-----+------------+--------------+--------------------------+------+------+
+| 200 | 2020-03-04 | Spine Injury | Recovered                | 1000 |    1 |
+| 201 | 2020-06-24 | Heart Attack | Successful Heart Surgery | 1001 |    2 |
+| 202 | 2022-03-12 | Diabetes     | Feeling Better           | 1002 |    4 |
++-----+------------+--------------+--------------------------+------+------+
+3 rows in set (0.000 sec)
+
+MariaDB [group27]> SELECT MIN(DSalary) AS SmallestPrice
+    -> FROM group27.Doctor;
++---------------+
+| SmallestPrice |
++---------------+
+| 100k          |
++---------------+
+1 row in set (0.000 sec)
+
+MariaDB [group27]> SELECT * FROM group27.Patient
+    -> WHERE PName LIKE 'a%';
++------+--------+------+----------+------------+------+------+
+| PId  | PName  | PAge | PAddress | PPhone     | RId  | HId  |
++------+--------+------+----------+------------+------+------+
+| 1001 | Aashik |   22 | Paris    | 3479573975 |  201 | 7340 |
++------+--------+------+----------+------------+------+------+
+1 row in set (0.000 sec)
+
+
+MariaDB [group27]> SELECT * FROM group27.Bill
+    -> WHERE TestType = 'Blood Test';
++--------+------+--------------+------------+------------+------------+---------------+-------+
+| BId    | PId  | DoctorCharge | TestType   | TestCharge | RoomCharge | Miscellaneous | Total |
++--------+------+--------------+------------+------------+------------+---------------+-------+
+| 100001 | 1000 |          100 | Blood Test |         50 |        400 |            50 |   500 |
++--------+------+--------------+------------+------------+------------+---------------+-------+
+1 row in set (0.000 sec)
+
+MariaDB [group27]> SELECT * FROM group27.Department
+    -> WHERE DepName = 'Nursing';
++-------+---------+------+
+| DepId | DepName | HId  |
++-------+---------+------+
+|   101 | Nursing | 7340 |
++-------+---------+------+
+1 row in set (0.000 sec)
+
+MariaDB [group27]> SELECT * PName, PPhone
+    -> FROM group27.Patient
+    -> WHERE PName = 'Nischal' AND PPhone = 848536925;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'PName, PPhone
+FROM group27.Patient
+WHERE PName = 'Nischal' AND PPhone = 84853...' at line 1
+MariaDB [group27]> SELECT  PName, PPhone
+    -> FROM group27.Patient
+    -> WHERE PName = 'Nischal' AND PPhone = 848536925;
++---------+-----------+
+| PName   | PPhone    |
++---------+-----------+
+| Nischal | 848536925 |
++---------+-----------+
+1 row in set (0.000 sec)
+
+MariaDB [group27]> SELECT * FROM group27.Doctor
+    -> WHERE Address LIKE 'Bre%';
+ERROR 1054 (42S22): Unknown column 'Address' in 'where clause'
+MariaDB [group27]> SELECT * FROM group27.Doctor
+    -> WHERE DAddress LIKE 'Bre%';
++-----+---------+----------------+-----------+----------+---------+------+-------+
+| DId | DName   | Specialization | DPhone    | DAddress | DSalary | HId  | DepId |
++-----+---------+----------------+-----------+----------+---------+------+-------+
+|   1 | Krishna | Neurosurgeon   | 220002222 | Bremen   | 400k    | 7340 |   100 |
++-----+---------+----------------+-----------+----------+---------+------+-------+
+1 row in set (0.000 sec)
+
+MariaDB [group27]> SELECT * FROM group27.Doctor
+    -> WHERE DAddress LIKE '_ondon';
+Empty set (0.000 sec)
+
+MariaDB [group27]> select count(DId), DAddress
+    ->     from Doctor
+    ->     group by DAddress;
++------------+-----------+
+| count(DId) | DAddress  |
++------------+-----------+
+|          1 | Berlin    |
+|          1 | Bremen    |
+|          1 | Hongkong  |
+|          2 | New York  |
+|          2 | Singapore |
+|          1 | Thailand  |
+|          1 | Turkey    |
++------------+-----------+
+7 rows in set (0.001 sec)
+
+MariaDB [group27]> FROM Patient
+    -> GROUP BY PAge
+    -> HAVING COUNT(PId) < 5
+    -> ORDER BY COUNT(PId) DESC;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM Patient
+GROUP BY PAge
+HAVING COUNT(PId) < 5
+ORDER BY COUNT(PId) DESC' at line 1
+MariaDB [group27]> SELECT COUNT(PId), PAge
+    -> FROM Patient
+    -> GROUP BY PAge
+    -> HAVING COUNT(PId) < 5
+    -> ORDER BY COUNT(PId) DESC;
++------------+------+
+| COUNT(PId) | PAge |
++------------+------+
+|          1 |   24 |
+|          1 |   22 |
+|          1 |   50 |
++------------+------+
+3 rows in set (0.001 sec)
+
+
+
+MariaDB [group27]> select * from Doctor
+    -> where DName = 'Charchit';
++-----+----------+----------------+------------+----------+---------+------+-------+
+| DId | DName    | Specialization | DPhone     | DAddress | DSalary | HId  | DepId |
++-----+----------+----------------+------------+----------+---------+------+-------+
+|   2 | Charchit | Gastrology     | 2200022453 | Turkey   | 300k    | 7340 |   100 |
++-----+----------+----------------+------------+----------+---------+------+-------+
+1 row in set (0.001 sec)
